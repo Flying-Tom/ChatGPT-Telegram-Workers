@@ -6,6 +6,7 @@ import { AzureChatAI, AzureImageAI } from './azure';
 import { Cohere } from './cohere';
 import { Gemini } from './gemini';
 import { Dalle, OpenAI } from './openai';
+import { PollinationsImageAI } from './pollinations';
 import { WorkersChat, WorkersImage } from './workersai';
 
 export const CHAT_AGENTS: ChatAgent[] = [
@@ -40,6 +41,7 @@ export const IMAGE_AGENTS: ImageAgent[] = [
     new AzureImageAI(),
     new Dalle(),
     new WorkersImage(),
+    new PollinationsImageAI(),
 ];
 
 export function loadImageGen(context: AgentUserConfig): ImageAgent | null {
