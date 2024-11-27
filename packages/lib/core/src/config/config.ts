@@ -121,6 +121,26 @@ export class AnthropicConfig {
 type UserConfig = AgentShareConfig & OpenAIConfig & DallEConfig & AzureConfig & WorkersConfig & GeminiConfig & MistralConfig & CohereConfig & AnthropicConfig;
 export type AgentUserConfigKey = keyof UserConfig;
 
+// -- Pollinations 配置 --
+export class PollinationsConfig {
+    // Pollinations api base
+    POLLINATIONS_API_BASE = 'https://pollinations.ai';
+
+    // Ref: https://github.com/pollinations/pollinations/blob/master/APIDOCS.md
+    // Pollinations model
+    POLLINATIONS_IMAGE_MODEL = 'flux';
+    // Pollinations image width
+    POLLINATIONS_IMAGE_WIDTH = '1024';
+    // Pollinations image height
+    POLLINATIONS_IMAGE_HEIGHT = '1024';
+    // Pollinations enhance
+    POLLINATIONS_IMAGE_ENHANCE = 'true';
+    // Pollinations private
+    POLLINATIONS_IMAGE_PRIVATE = 'true';
+    // Pollinations nologo
+    POLLINATIONS_IMAGE_NOLOGO = 'true';
+}
+
 export class DefineKeys {
     DEFINE_KEYS: AgentUserConfigKey[] = [];
 }

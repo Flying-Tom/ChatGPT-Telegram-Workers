@@ -12,6 +12,7 @@ import {
     GeminiConfig,
     MistralConfig,
     OpenAIConfig,
+    PollinationsConfig,
     WorkersConfig,
 } from './config';
 import { ConfigMerger } from './merger';
@@ -36,6 +37,7 @@ function createAgentUserConfig(): AgentUserConfig {
         new MistralConfig(),
         new CohereConfig(),
         new AnthropicConfig(),
+        new PollinationsConfig(),
     );
 }
 
