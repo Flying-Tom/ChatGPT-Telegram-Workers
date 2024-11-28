@@ -1739,37 +1739,28 @@ class EnvironmentConfig {
   };
   class PollinationsBase {
     name = "pollinations";
-    modelFromURI = (uri) => {
-      if (!uri) {
-        return "";
-      }
-      try {
-        const model = new URL(uri).searchParams.get("model");
-        if (model) {
-          return model;
-        }
-        throw new Error("Invalid URI");
-      } catch {
-        return uri;
-      }
-    };
   }
   class PollinationsChatAI extends PollinationsBase {
-    modelKey = "POLLINATIONS_CHAT_API";
+    modelKey = "POLLINATIONS_CHAT_MODEL";
     enable = (context) => {
       return !!(context.POLLINATIONS_CHAT_ENABLED && context.POLLINATIONS_CHAT_API);
     };
     model = (ctx) => {
-      return ctx.POLLINATIONS_CHAT_API;
+      return ctx.POLLINATIONS_CHAT_MODEL;
     };
-    request = async (params, context, onStream) => {
+    request = async (params, context) => {
       const { prompt, messages } = params;
-      const url = `${context.POLLINATIONS_CHAT_API}/openai`;
+      const url = `${context.POLLINATIONS_CHAT_API}`;
       const body = {
         messages: await renderOpenAIMessages(prompt, messages, true),
-        stream: onStream != null
+        model: context.POLLINATIONS_CHAT_MODEL
       };
-      return convertStringToResponseMessages(requestChatCompletions(url, header, body, onStream));
+      const resp = await fetch(url, {
+        method: "POST",
+        headers: header,
+        body: JSON.stringify(body)
+      });
+      return convertStringToResponseMessages(resp.text());
     };
     modelList = async (context) => {
       if (context.POLLINATIONS_CHAT_MODELS_LIST === "") {
@@ -1785,12 +1776,12 @@ class EnvironmentConfig {
     };
   }
   class PollinationsImageAI extends PollinationsBase {
-    modelKey = "POLLINATIONS_IMAGE_API";
+    modelKey = "POLLINATIONS_IMAGE_MODEL";
     enable = (context) => {
       return !!context.POLLINATIONS_IMAGE_API;
     };
     model = (ctx) => {
-      return this.modelFromURI(ctx.POLLINATIONS_IMAGE_API);
+      return ctx.POLLINATIONS_IMAGE_MODEL;
     };
     request = async (prompt, context) => {
       const params = new URLSearchParams({
@@ -1801,7 +1792,7 @@ class EnvironmentConfig {
         private: context.POLLINATIONS_IMAGE_PRIVATE,
         enhance: context.POLLINATIONS_IMAGE_ENHANCE
       });
-      const url = `${context.POLLINATIONS_IMAGE_API}/p/${encodeURIComponent(prompt)}?${params.toString()}`;
+      const url = `${context.POLLINATIONS_IMAGE_API}/prompt/${encodeURIComponent(prompt)}?${params.toString()}`;
       const resp = await fetch(url, {
         method: "GET",
         headers: header

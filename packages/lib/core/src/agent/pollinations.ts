@@ -2,13 +2,11 @@ import type { AgentUserConfig } from '../config';
 import type {
     ChatAgent,
     ChatAgentResponse,
-    ChatStreamTextHandler,
     ImageAgent,
     LLMChatParams,
 } from './types';
 
 import { renderOpenAIMessages } from './openai';
-import { requestChatCompletions } from './request';
 import { convertStringToResponseMessages, loadModelsList } from './utils';
 
 const header = {
@@ -17,41 +15,32 @@ const header = {
 
 class PollinationsBase {
     readonly name = 'pollinations';
-    readonly modelFromURI = (uri: string | null): string => {
-        if (!uri) {
-            return '';
-        }
-        try {
-            const model = new URL(uri).searchParams.get('model');
-            if (model) {
-                return model;
-            }
-            throw new Error('Invalid URI');
-        } catch {
-            return uri;
-        }
-    };
 }
 
 export class PollinationsChatAI extends PollinationsBase implements ChatAgent {
-    readonly modelKey = 'POLLINATIONS_CHAT_API';
+    readonly modelKey = 'POLLINATIONS_CHAT_MODEL';
 
     readonly enable = (context: AgentUserConfig): boolean => {
         return !!(context.POLLINATIONS_CHAT_ENABLED && context.POLLINATIONS_CHAT_API);
     };
 
     readonly model = (ctx: AgentUserConfig): string | null => {
-        return ctx.POLLINATIONS_CHAT_API;
+        return ctx.POLLINATIONS_CHAT_MODEL;
     };
 
-    readonly request = async (params: LLMChatParams, context: AgentUserConfig, onStream: ChatStreamTextHandler | null): Promise<ChatAgentResponse> => {
+    readonly request = async (params: LLMChatParams, context: AgentUserConfig): Promise<ChatAgentResponse> => {
         const { prompt, messages } = params;
-        const url = `${context.POLLINATIONS_CHAT_API}/openai`;
+        const url = `${context.POLLINATIONS_CHAT_API}`;
         const body = {
             messages: await renderOpenAIMessages(prompt, messages, true),
-            stream: onStream != null,
+            model: context.POLLINATIONS_CHAT_MODEL,
         };
-        return convertStringToResponseMessages(requestChatCompletions(url, header, body, onStream));
+        const resp = await fetch(url, {
+            method: 'POST',
+            headers: header,
+            body: JSON.stringify(body),
+        });
+        return convertStringToResponseMessages(resp.text());
     };
 
     readonly modelList = async (context: AgentUserConfig): Promise<string[]> => {
@@ -69,14 +58,14 @@ export class PollinationsChatAI extends PollinationsBase implements ChatAgent {
 }
 
 export class PollinationsImageAI extends PollinationsBase implements ImageAgent {
-    readonly modelKey = 'POLLINATIONS_IMAGE_API';
+    readonly modelKey = 'POLLINATIONS_IMAGE_MODEL';
 
     readonly enable = (context: AgentUserConfig): boolean => {
         return !!(context.POLLINATIONS_IMAGE_API);
     };
 
     readonly model = (ctx: AgentUserConfig) => {
-        return this.modelFromURI(ctx.POLLINATIONS_IMAGE_API);
+        return ctx.POLLINATIONS_IMAGE_MODEL;
     };
 
     readonly request = async (prompt: string, context: AgentUserConfig): Promise<Blob> => {
@@ -88,7 +77,7 @@ export class PollinationsImageAI extends PollinationsBase implements ImageAgent 
             private: context.POLLINATIONS_IMAGE_PRIVATE,
             enhance: context.POLLINATIONS_IMAGE_ENHANCE,
         });
-        const url = `${context.POLLINATIONS_IMAGE_API}/p/${encodeURIComponent(prompt)}?${params.toString()}`;
+        const url = `${context.POLLINATIONS_IMAGE_API}/prompt/${encodeURIComponent(prompt)}?${params.toString()}`;
         const resp = await fetch(url, {
             method: 'GET',
             headers: header,
