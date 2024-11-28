@@ -6,7 +6,7 @@ import { Cohere } from './cohere';
 import { Gemini } from './gemini';
 import { Mistral } from './mistralai';
 import { Dalle, OpenAI } from './openai';
-import { PollinationsImageAI } from './pollinations';
+import { PollinationsChatAI, PollinationsImageAI } from './pollinations';
 import { WorkersChat, WorkersImage } from './workersai';
 
 export const CHAT_AGENTS: ChatAgent[] = [
@@ -17,6 +17,7 @@ export const CHAT_AGENTS: ChatAgent[] = [
     new Cohere(),
     new Gemini(),
     new Mistral(),
+    new PollinationsChatAI(),
 ];
 
 export function loadChatLLM(context: AgentUserConfig): ChatAgent | null {

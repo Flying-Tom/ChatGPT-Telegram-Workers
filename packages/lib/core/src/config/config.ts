@@ -202,25 +202,33 @@ export class AnthropicConfig {
     ANTHROPIC_CHAT_MODELS_LIST = `["claude-3-5-sonnet-latest", "claude-3-5-haiku-latest"]`;
 }
 
-
 // -- Pollinations 配置 --
 export class PollinationsConfig {
-    // Pollinations api base
-    POLLINATIONS_API_BASE = 'https://pollinations.ai';
-
     // Ref: https://github.com/pollinations/pollinations/blob/master/APIDOCS.md
-    // Pollinations model
+    // Whether to enable Pollinations.ai Chat
+    POLLINATIONS_CHAT_ENABLED = 'false';
+    // Pollinations Chat API
+    POLLINATIONS_CHAT_API = 'https://text.pollinations.ai';
+    // Pollinations Chat Model
+    POLLINATIONS_CHAT_MODEL = 'openai';
+    // Pollinations Chat Models List, When empty, will use the api to get the list
+    POLLINATIONS_CHAT_MODELS_LIST = '';
+    // Whether to enable Pollinations.ai Image
+    POLLINATIONS_IMAGE_ENABLED = 'false';
+    // Pollinations Image API
+    POLLINATIONS_IMAGE_API = 'https://image.pollinations.ai';
+    // Pollinations Image model
     POLLINATIONS_IMAGE_MODEL = 'flux';
-    // Pollinations image width
-    POLLINATIONS_IMAGE_WIDTH = "1024";
-    // Pollinations image height
-    POLLINATIONS_IMAGE_HEIGHT = "1024";
-    // Pollinations enhance
-    POLLINATIONS_IMAGE_ENHANCE = "true";
-    // Pollinations private
-    POLLINATIONS_IMAGE_PRIVATE = "true";
-    // Pollinations nologo
-    POLLINATIONS_IMAGE_NOLOGO = "true";
+    // Pollinations Image width
+    POLLINATIONS_IMAGE_WIDTH = '1024';
+    // Pollinations Image height
+    POLLINATIONS_IMAGE_HEIGHT = '1024';
+    // Pollinations Image enhance
+    POLLINATIONS_IMAGE_ENHANCE = 'true';
+    // Pollinations Image private
+    POLLINATIONS_IMAGE_PRIVATE = 'true';
+    // Pollinations Image nologo
+    POLLINATIONS_IMAGE_NOLOGO = 'true';
 }
 
 export class DefineKeys {

@@ -27,7 +27,7 @@ export type AgentUserConfig = Record<string, any> &
     GeminiConfig &
     MistralConfig &
     CohereConfig &
-    AnthropicConfig&
+    AnthropicConfig &
     PollinationsConfig;
 
 function createAgentUserConfig(): AgentUserConfig {
