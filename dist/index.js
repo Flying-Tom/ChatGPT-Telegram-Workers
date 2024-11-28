@@ -103,6 +103,7 @@ class EnvironmentConfig {
     POLLINATIONS_IMAGE_MODEL = "flux";
     POLLINATIONS_IMAGE_WIDTH = "1024";
     POLLINATIONS_IMAGE_HEIGHT = "1024";
+    POLLINATIONS_IMAGE_SEED = "40";
     POLLINATIONS_IMAGE_ENHANCE = "true";
     POLLINATIONS_IMAGE_PRIVATE = "true";
     POLLINATIONS_IMAGE_NOLOGO = "true";
@@ -1788,6 +1789,7 @@ class EnvironmentConfig {
         width: context.POLLINATIONS_IMAGE_WIDTH,
         height: context.POLLINATIONS_IMAGE_HEIGHT,
         model: context.POLLINATIONS_IMAGE_MODEL,
+        seed: context.POLLINATIONS_IMAGE_SEED,
         nologo: context.POLLINATIONS_IMAGE_NOLOGO,
         private: context.POLLINATIONS_IMAGE_PRIVATE,
         enhance: context.POLLINATIONS_IMAGE_ENHANCE

@@ -223,6 +223,8 @@ export class PollinationsConfig {
     POLLINATIONS_IMAGE_WIDTH = '1024';
     // Pollinations Image height
     POLLINATIONS_IMAGE_HEIGHT = '1024';
+    // Pollinations Image seed
+    POLLINATIONS_IMAGE_SEED = '40';
     // Pollinations Image enhance
     POLLINATIONS_IMAGE_ENHANCE = 'true';
     // Pollinations Image private

@@ -73,6 +73,7 @@ export class PollinationsImageAI extends PollinationsBase implements ImageAgent 
             width: context.POLLINATIONS_IMAGE_WIDTH,
             height: context.POLLINATIONS_IMAGE_HEIGHT,
             model: context.POLLINATIONS_IMAGE_MODEL,
+            seed: context.POLLINATIONS_IMAGE_SEED,
             nologo: context.POLLINATIONS_IMAGE_NOLOGO,
             private: context.POLLINATIONS_IMAGE_PRIVATE,
             enhance: context.POLLINATIONS_IMAGE_ENHANCE,
