@@ -206,7 +206,7 @@ export class AnthropicConfig {
 export class PollinationsConfig {
     // Ref: https://github.com/pollinations/pollinations/blob/master/APIDOCS.md
     // Whether to enable Pollinations.ai Chat
-    POLLINATIONS_CHAT_ENABLED = 'false';
+    POLLINATIONS_CHAT_ENABLED = 'true';
     // Pollinations Chat API
     POLLINATIONS_CHAT_API = 'https://text.pollinations.ai';
     // Pollinations Chat Model
@@ -214,11 +214,11 @@ export class PollinationsConfig {
     // Pollinations Chat Models List, When empty, will use the api to get the list
     POLLINATIONS_CHAT_MODELS_LIST = '';
     // Whether to enable Pollinations.ai Image
-    POLLINATIONS_IMAGE_ENABLED = 'false';
+    POLLINATIONS_IMAGE_ENABLED = 'true';
     // Pollinations Image API
     POLLINATIONS_IMAGE_API = 'https://image.pollinations.ai';
     // Pollinations Image model
-    POLLINATIONS_IMAGE_MODEL = 'flux';
+    POLLINATIONS_IMAGE_MODEL = 'flux-pro';
     // Pollinations Image width
     POLLINATIONS_IMAGE_WIDTH = '1024';
     // Pollinations Image height

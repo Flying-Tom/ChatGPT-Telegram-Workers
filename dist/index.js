@@ -93,21 +93,6 @@ class EnvironmentConfig {
     ANTHROPIC_CHAT_MODEL = "claude-3-5-haiku-latest";
     ANTHROPIC_CHAT_MODELS_LIST = `["claude-3-5-sonnet-latest", "claude-3-5-haiku-latest"]`;
   }
-  class PollinationsConfig {
-    POLLINATIONS_CHAT_ENABLED = "false";
-    POLLINATIONS_CHAT_API = "https://text.pollinations.ai";
-    POLLINATIONS_CHAT_MODEL = "openai";
-    POLLINATIONS_CHAT_MODELS_LIST = "";
-    POLLINATIONS_IMAGE_ENABLED = "false";
-    POLLINATIONS_IMAGE_API = "https://image.pollinations.ai";
-    POLLINATIONS_IMAGE_MODEL = "flux";
-    POLLINATIONS_IMAGE_WIDTH = "1024";
-    POLLINATIONS_IMAGE_HEIGHT = "1024";
-    POLLINATIONS_IMAGE_SEED = "40";
-    POLLINATIONS_IMAGE_ENHANCE = "true";
-    POLLINATIONS_IMAGE_PRIVATE = "true";
-    POLLINATIONS_IMAGE_NOLOGO = "true";
-  }
   class DefineKeys {
     DEFINE_KEYS = [];
   }
@@ -221,8 +206,7 @@ class EnvironmentConfig {
       new GeminiConfig(),
       new MistralConfig(),
       new CohereConfig(),
-      new AnthropicConfig(),
-      new PollinationsConfig()
+      new AnthropicConfig()
     );
   }
   const ENV_KEY_MAPPER = {
@@ -1735,73 +1719,6 @@ class EnvironmentConfig {
       });
     };
   }
-  const header = {
-    "Content-Type": "application/json"
-  };
-  class PollinationsBase {
-    name = "pollinations";
-  }
-  class PollinationsChatAI extends PollinationsBase {
-    modelKey = "POLLINATIONS_CHAT_MODEL";
-    enable = (context) => {
-      return !!(context.POLLINATIONS_CHAT_ENABLED && context.POLLINATIONS_CHAT_API);
-    };
-    model = (ctx) => {
-      return ctx.POLLINATIONS_CHAT_MODEL;
-    };
-    request = async (params, context) => {
-      const { prompt, messages } = params;
-      const url = `${context.POLLINATIONS_CHAT_API}`;
-      const body = {
-        messages: await renderOpenAIMessages(prompt, messages, true),
-        model: context.POLLINATIONS_CHAT_MODEL
-      };
-      const resp = await fetch(url, {
-        method: "POST",
-        headers: header,
-        body: JSON.stringify(body)
-      });
-      return convertStringToResponseMessages(resp.text());
-    };
-    modelList = async (context) => {
-      if (context.POLLINATIONS_CHAT_MODELS_LIST === "") {
-        context.POLLINATIONS_CHAT_MODELS_LIST = `${context.POLLINATIONS_CHAT_API}/models`;
-      }
-      return loadModelsList(context.POLLINATIONS_CHAT_MODELS_LIST, async (url) => {
-        const header2 = {
-          "Content-Type": "application/json"
-        };
-        const data = await fetch(url, { headers: header2 }).then((res) => res.json());
-        return data.map((model) => model.name) || [];
-      });
-    };
-  }
-  class PollinationsImageAI extends PollinationsBase {
-    modelKey = "POLLINATIONS_IMAGE_MODEL";
-    enable = (context) => {
-      return !!context.POLLINATIONS_IMAGE_API;
-    };
-    model = (ctx) => {
-      return ctx.POLLINATIONS_IMAGE_MODEL;
-    };
-    request = async (prompt, context) => {
-      const params = new URLSearchParams({
-        width: context.POLLINATIONS_IMAGE_WIDTH,
-        height: context.POLLINATIONS_IMAGE_HEIGHT,
-        model: context.POLLINATIONS_IMAGE_MODEL,
-        seed: context.POLLINATIONS_IMAGE_SEED,
-        nologo: context.POLLINATIONS_IMAGE_NOLOGO,
-        private: context.POLLINATIONS_IMAGE_PRIVATE,
-        enhance: context.POLLINATIONS_IMAGE_ENHANCE
-      });
-      const url = `${context.POLLINATIONS_IMAGE_API}/prompt/${encodeURIComponent(prompt)}?${params.toString()}`;
-      const resp = await fetch(url, {
-        method: "GET",
-        headers: header
-      });
-      return await resp.blob();
-    };
-  }
   class WorkerBase {
     name = "workers";
     run = async (model, body, id, token) => {
@@ -1907,8 +1824,7 @@ class EnvironmentConfig {
     new WorkersChat(),
     new Cohere(),
     new Gemini(),
-    new Mistral(),
-    new PollinationsChatAI()
+    new Mistral()
   ];
   function loadChatLLM(context) {
     for (const llm of CHAT_AGENTS) {
@@ -1926,8 +1842,7 @@ class EnvironmentConfig {
   const IMAGE_AGENTS = [
     new AzureImageAI(),
     new Dalle(),
-    new WorkersImage(),
-    new PollinationsImageAI()
+    new WorkersImage()
   ];
   function loadImageGen(context) {
     for (const imgGen of IMAGE_AGENTS) {
@@ -2729,10 +2644,6 @@ class EnvironmentConfig {
       const maxPage = Math.ceil(models.length / maxRow / maxCol);
       let currentRow = [];
       for (let i = page * maxRow * maxCol; i < models.length; i++) {
-        currentRow.push({
-          text: models[i],
-          callback_data: `cm:${JSON.stringify([agent, models[i]])}`
-        });
         if (i % maxCol === 0) {
           keyboard.push(currentRow);
           currentRow = [];
@@ -2740,6 +2651,10 @@ class EnvironmentConfig {
         if (keyboard.length >= maxRow) {
           break;
         }
+        currentRow.push({
+          text: models[i],
+          callback_data: `cm:${JSON.stringify([agent, models[i]])}`
+        });
       }
       if (currentRow.length > 0) {
         keyboard.push(currentRow);
