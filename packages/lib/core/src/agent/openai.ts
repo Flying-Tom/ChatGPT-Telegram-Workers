@@ -9,7 +9,7 @@ import type {
 } from './types';
 import { ENV } from '../config';
 import { imageToBase64String } from '../utils/image';
-import { requestChatCompletions } from './request';
+import { requestChatCompletions } from './request/openai';
 import { convertStringToResponseMessages, extractImageContent, loadModelsList } from './utils';
 
 async function renderOpenAIMessage(item: HistoryItem, supportImage?: boolean): Promise<any> {

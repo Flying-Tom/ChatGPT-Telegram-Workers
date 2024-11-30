@@ -1,5 +1,5 @@
 import type { AgentUserConfig } from '../config';
-import type { SseChatCompatibleOptions } from './request';
+import type { SseChatCompatibleOptions } from './request/openai';
 import type {
     ChatAgent,
     ChatAgentResponse,
@@ -9,7 +9,7 @@ import type {
     LLMChatParams,
 } from './types';
 import { renderOpenAIMessages } from './openai';
-import { isJsonResponse, requestChatCompletions } from './request';
+import { isJsonResponse, requestChatCompletions } from './request/openai';
 import { convertStringToResponseMessages, loadModelsList } from './utils';
 
 class WorkerBase {

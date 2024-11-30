@@ -7,7 +7,7 @@ import type {
     LLMChatParams,
 } from './types';
 import { renderOpenAIMessages } from './openai';
-import { requestChatCompletions } from './request';
+import { requestChatCompletions } from './request/openai';
 import { convertStringToResponseMessages, loadModelsList } from './utils';
 
 class AzureBase {

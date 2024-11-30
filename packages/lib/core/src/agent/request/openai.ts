@@ -1,6 +1,6 @@
-import type { ChatStreamTextHandler } from './types';
-import { ENV } from '../config';
-import { Stream } from './stream';
+import type { ChatStreamTextHandler } from '../types';
+import { ENV } from '../../config';
+import { Stream } from '../stream';
 
 export interface SseChatCompatibleOptions {
     streamBuilder?: (resp: Response, controller: AbortController) => Stream;

@@ -1,8 +1,8 @@
 import type { AgentUserConfig } from '../config';
-import type { SseChatCompatibleOptions } from './request';
+import type { SseChatCompatibleOptions } from './request/openai';
 import type { ChatAgent, ChatAgentResponse, ChatStreamTextHandler, LLMChatParams } from './types';
 import { renderOpenAIMessages } from './openai';
-import { requestChatCompletions } from './request';
+import { requestChatCompletions } from './request/openai';
 import { convertStringToResponseMessages, loadModelsList } from './utils';
 
 export class Cohere implements ChatAgent {
